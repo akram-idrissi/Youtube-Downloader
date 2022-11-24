@@ -1,36 +1,25 @@
 import argparse
 import os
 import pytube
-import sys
 
 MP3 = '.mp3'
-SINGLE_SONGS_DIR = 'single-songs'
+SONGS_DIR = 'songs'
 
 
 def get_args():
     my_parser = argparse.ArgumentParser(
         prog='main',
-        usage='%(prog)s url [options]',
-        description='Download and convert a youtube video to mp3 format')
+        usage='%(prog)s options',
+        description='Download and convert youtube videos to mp3 format')
 
-    my_parser.add_argument('url', help='The url that you want to download')
-    my_parser.add_argument('-f', '--file', metavar='', help='Load from file')
-    my_parser.add_argument('-p', '--playlist', action='store_true', help='Playlist mode')
-    my_parser.add_argument('-s', '--single', action='store_true', help='Single mode')
-    my_parser.add_argument('-o', '--output', metavar='', help='Output file')
-    
+    my_parser.add_argument('-v', '--video', metavar='', help='needs a video url')    
+    my_parser.add_argument('-p', '--playlist', metavar='', help='needs a playlist url')
+    my_parser.add_argument('-mv', '--multiple_videos', metavar='', help='needs path for file that has urls')
+    my_parser.add_argument('-mp', '--multiple_playlists', metavar='', help='needs path for file that has urls')
 
     return my_parser.parse_args()
 
- 
-def validate_args(args):
-    if len(args) < 2:
-        print('The provided arguments are not enough')
-        return False
-
-    return True
-
-
+  
 def get_links(path):
     links = []
 
@@ -41,37 +30,62 @@ def get_links(path):
     return links   
 
 
-def to_mp3(audio_mp4):
-    name, _ = os.path.splitext(audio_mp4)
-    audio_mp3 = name + MP3
-    os.rename(os.path.join(SINGLE_SONGS_DIR, audio_mp4), 
-        os.path.join(SINGLE_SONGS_DIR, audio_mp3))
+def to_mp3():
+    os.chdir(SONGS_DIR)
+    for song in os.listdir():
+        name, _ = os.path.splitext(song)
+        audio_mp3 = name + MP3
+        os.rename(song, audio_mp3)    
 
 
-def download(link):
+def download(video):
     try:
-        video = pytube.YouTube(link)
         print(f'Downloading {video.title}')
         audio = video.streams.filter(only_audio=True).first()
-        audio = audio.download(SINGLE_SONGS_DIR)
-        to_mp3(audio)
+        audio = audio.download(SONGS_DIR)
+        to_mp3()
     except Exception as e:
         print(f'Error {str(e)}')
-    
+
+
+def download_playlist(url):
+    playlist = pytube.Playlist(url)
+    print(f'Downloading: {playlist.title}')
+
+    for video in playlist.videos:
+        download(video)
+
+
+def download_video(url):
+    video = pytube.YouTube(url)
+    download(video)
+
 
 def main():
+    args = get_args()
 
-    args = sys.argv
-    if not validate_args(args): return
-    input = args[1]
+    if not os.path.exists(SONGS_DIR):
+        os.mkdir(SONGS_DIR)
 
-    links = get_links(input)
+    if args.video:
+        download_video(args.video)
 
-    if not os.path.exists(SINGLE_SONGS_DIR):
-        os.mkdir(SINGLE_SONGS_DIR)
+    elif args.playlist:
+        download_playlist(args.playlist)
 
-    for link in links:
-        download(link)
+    elif args.multiple_videos:
+        links = get_links(args.multiple_videos)
+        for link in links:
+            download_video(link)
+
+    elif args.multiple_playlists:
+        links = get_links(args.multiple_playlists)
+        for link in links:
+            download_playlist(link)
+
+    else:
+        print('You didn\'n provide enough arguments. Get help by running: python main.py -h')
+
 
 if __name__ == '__main__':
     main()
