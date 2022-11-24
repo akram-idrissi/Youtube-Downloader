@@ -1,3 +1,4 @@
+import argparse
 import os
 import pytube
 import sys
@@ -6,6 +7,22 @@ MP3 = '.mp3'
 SINGLE_SONGS_DIR = 'single-songs'
 
 
+def get_args():
+    my_parser = argparse.ArgumentParser(
+        prog='main',
+        usage='%(prog)s url [options]',
+        description='Download and convert a youtube video to mp3 format')
+
+    my_parser.add_argument('url', help='The url that you want to download')
+    my_parser.add_argument('-f', '--file', metavar='', help='Load from file')
+    my_parser.add_argument('-p', '--playlist', action='store_true', help='Playlist mode')
+    my_parser.add_argument('-s', '--single', action='store_true', help='Single mode')
+    my_parser.add_argument('-o', '--output', metavar='', help='Output file')
+    
+
+    return my_parser.parse_args()
+
+ 
 def validate_args(args):
     if len(args) < 2:
         print('The provided arguments are not enough')
@@ -55,7 +72,6 @@ def main():
 
     for link in links:
         download(link)
-
 
 if __name__ == '__main__':
     main()
