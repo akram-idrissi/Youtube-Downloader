@@ -7,10 +7,6 @@ Youtube Downloader is an automation that makes downloading youtube videos fast a
 * Clone this repository using: `git clone https://github.com/akram-idrissi/Youtube-Downloader.git`
 * Install the required modules using: `pip install -r requirements.txt`
 
-# Upcoming features
-* Keep track of what has been downloaded and not, in case we stop downloading and we want to come back later and start from where we left.
-* Make the script multi threading.
-
 # Arguments
 
 | Short Form    | Long Form    | Descritpion  |
@@ -36,3 +32,6 @@ python main.py -mp absolute_file_path
 
 The output will be sotred in a file called output that has the downloaded videos.
 
+# Upcoming features
+* Keep track of what has been downloaded and not, in case we stop downloading and we want to come back later and start from where we left.
+* Make the script multi threading.
