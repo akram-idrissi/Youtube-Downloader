@@ -1,6 +1,4 @@
 # Youtube Downloader
-
-
 Youtube Downloader is an automation that makes downloading youtube videos fast and easy.
 
 # Set up
@@ -35,3 +33,6 @@ The output will be sotred in a file called output that has the downloaded videos
 # Upcoming features
 * Keep track of what has been downloaded and not, in case we stop downloading and we want to come back later and start from where we left.
 * Make the script multi threading.
+
+# Side Note
+* command to generate requirements.txt file: `pip freeze > requirements.txt`
