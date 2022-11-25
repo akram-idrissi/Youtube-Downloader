@@ -3,7 +3,7 @@ import os
 import pytube
 
 MP3 = '.mp3'
-SONGS_DIR = 'songs'
+OUTPUT_DIR = 'output'
 
 
 def get_args():
@@ -31,7 +31,7 @@ def get_links(path):
 
 
 def to_mp3():
-    os.chdir(SONGS_DIR)
+    os.chdir(OUTPUT_DIR)
     for song in os.listdir():
         name, _ = os.path.splitext(song)
         audio_mp3 = name + MP3
@@ -42,7 +42,7 @@ def download(video):
     try:
         print(f'Downloading {video.title}')
         audio = video.streams.filter(only_audio=True).first()
-        audio = audio.download(SONGS_DIR)
+        audio = audio.download(OUTPUT_DIR)
         to_mp3()
     except Exception as e:
         print(f'Error {str(e)}')
@@ -64,8 +64,8 @@ def download_video(url):
 def main():
     args = get_args()
 
-    if not os.path.exists(SONGS_DIR):
-        os.mkdir(SONGS_DIR)
+    if not os.path.exists(OUTPUT_DIR):
+        os.mkdir(OUTPUT_DIR)
 
     if args.video:
         download_video(args.video)
