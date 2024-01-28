@@ -1,0 +1,23 @@
+{
+  "name": "youtube-downloader",
+  "version": "1.0.0",
+  "description": "Youtube Downloader is an automation that makes downloading youtube videos fast and easy.",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akram-idrissi/Youtube-Downloader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akram-idrissi/Youtube-Downloader/issues"
+  },
+  "homepage": "https://github.com/akram-idrissi/Youtube-Downloader#readme",
+  "dependencies": {
+    "youtube-playlist-info": "^1.1.2",
+    "ytdl-core": "^4.11.5"
+  }
+}
